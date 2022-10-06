@@ -44,14 +44,3 @@ spec:
             secretKeyRef:
               name: auth-service-secret
               key: AUTH_SECRET
-        envFrom:
-        - configMapRef:
-            name: roles-config
-        volumeMounts:
-        - name: roles-config
-          mountPath: "/config"
-          readOnly: true
-      volumes:
-      - name: roles-config
-        configMap:
-          name: roles-config
