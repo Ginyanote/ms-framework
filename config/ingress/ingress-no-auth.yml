@@ -5,8 +5,7 @@ metadata:
   namespace: default
 spec:
   rules:
-  - host: cluster.test.com
-    http:
+  - http:
       paths:
       - path: '/health'
       #- path: /
