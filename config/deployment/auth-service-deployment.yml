@@ -22,7 +22,7 @@ spec:
         - containerPort: 5000
         env:
         - name: HOST_ADDRESS
-          value: "167.235.154.101"
+          value: "0.0.0.0"
         - name: DATABASE_NAME
           value: "postgres"
         - name: DATABASE_HOST
