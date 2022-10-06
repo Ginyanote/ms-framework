@@ -21,14 +21,14 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: auth-server-test-service
+            name: auth-service-service
             port:
               number: 5000
       - path: '/login'
         pathType: Prefix
         backend:
           service:
-            name: auth-server-test-service
+            name: auth-service-service
             port:
               number: 5000
   #ingressClassName: nginx
