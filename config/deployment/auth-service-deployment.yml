@@ -16,11 +16,13 @@ spec:
     spec:
       containers:
       - name: auth-service
-        image: ginyanote/auth-service:0.1.0
+        image: ginyanote/auth-service:0.1.1
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
         env:
+        - name: HOST_ADDRESS
+          value: "167.235.154.101"
         - name: DATABASE_NAME
           value: "postgres"
         - name: DATABASE_HOST
