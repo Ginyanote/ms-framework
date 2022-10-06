@@ -17,8 +17,10 @@ spec:
     spec:
       containers:
       - name: client
-        image: client-test-1:latest
-        imagePullPolicy: Never
+        image: ginyanote/client-test-1:0.1.0
+        #image: client-test-1:latest
+        imagePullPolicy: IfNotPresent
+        #imagePullPolicy: Never
         ports:
         - containerPort: 8081
         env:
