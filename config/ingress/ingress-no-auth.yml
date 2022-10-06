@@ -31,4 +31,3 @@ spec:
             name: auth-service-service
             port:
               number: 5000
-  #ingressClassName: nginx

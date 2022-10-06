@@ -5,9 +5,8 @@ metadata:
   namespace: default
   annotations:
     kubernetes.io/ingress.class: "traefik"
-    nginx.ingress.kubernetes.io/auth-url: http://auth-service-service.default.svc.cluster.local:5000/verify
-    nginx.ingress.kubernetes.io/auth-response-headers: UserID, IsAdmin, UserRoles
-  #  nginx.ingress.kubernetes.io/rewrite-target: /$1
+    ingress.kubernetes.io/auth-url: http://auth-service-service.default.svc.cluster.local:5000/verify
+    ingress.kubernetes.io/auth-response-headers: UserID, IsAdmin, UserRoles
 spec:
   rules:
   - http:
@@ -34,4 +33,3 @@ spec:
             name: auth-service-service
             port: 
               number: 5000
-  # ingressClassName: nginx

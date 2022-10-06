@@ -9,6 +9,8 @@ spec:
       app: user-db-postgres
   template:
     metadata:
+      annotations:
+        linkerd.io/inject: enabled
       labels:
         app: user-db-postgres
     spec:
@@ -19,10 +21,6 @@ spec:
         ports:
           - containerPort: 5432 # Exposing the container port 5432 for PostgreSQL client connections.
         env:
-        #- name: POSTGRES_USER
-        #  value: user1
-        #- name: POSTGRES_PASSWORD
-        #  value: password1
         - name: POSTGRES_USER
           valueFrom:
             secretKeyRef:
