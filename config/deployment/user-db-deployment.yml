@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-db-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-db-postgres
+  template:
+    metadata:
+      labels:
+        app: user-db-postgres
+    spec:
+      containers:
+      - name: user-db-postgres
+        image: postgres:14.5
+        imagePullPolicy: IfNotPresent
+        ports:
+          - containerPort: 5432 # Exposing the container port 5432 for PostgreSQL client connections.
+        env:
+        #- name: POSTGRES_USER
+        #  value: user1
+        #- name: POSTGRES_PASSWORD
+        #  value: password1
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: user-db-secret
+              key: DATABASE_USER
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: user-db-secret
+              key: DATABASE_PASSWORD
+        volumeMounts:
+        - mountPath: /var/lib/postgresql/data
+          name: user-db-postgres-pv-claim
+      volumes:
+      - name: user-db-postgres-pv-claim
+        persistentVolumeClaim:
+          claimName: user-db-postgres-pv-claim

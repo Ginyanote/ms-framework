@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-service-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-service
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: auth-service
+    spec:
+      containers:
+      - name: auth-service
+        image: ginyanote/auth-service:0.1.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DATABASE_NAME
+          value: "postgres"
+        - name: DATABASE_HOST
+          value: "postgres-service"
+        - name: DATABASE_PORT
+          value: "5432"
+        - name: EXPIRES_SECONDS
+          value: '3000'
+        - name: DATABASE_USER
+          valueFrom:
+            secretKeyRef:
+              name: user-db-secret
+              key: DATABASE_USER
+        - name: DATABASE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: user-db-secret
+              key: DATABASE_PASSWORD
+        - name: AUTH_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: auth-service-secret
+              key: AUTH_SECRET
+        envFrom:
+        - configMapRef:
+            name: roles-config
+        volumeMounts:
+        - name: roles-config
+          mountPath: "/config"
+          readOnly: true
+      volumes:
+      - name: roles-config
+        configMap:
+          name: roles-config

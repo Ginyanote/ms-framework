@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-test-deployment
+  app: client-test-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client-test-1
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: client-test-1
+    spec:
+      containers:
+      - name: client
+        image: client-test-1:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8081
+        env:
+        - name: SERVER_HOST
+          value: "server-test-service"

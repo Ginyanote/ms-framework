@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: server-test-deployment
+  app: server-test-1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: server-test-1
+  template:
+    metadata:
+      annotations:
+        linkerd.io/inject: enabled
+      labels:
+        app: server-test-1
+    spec:
+      containers:
+      - name: server
+        image: server-test-1:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
