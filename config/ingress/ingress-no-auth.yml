@@ -3,6 +3,8 @@ kind: Ingress
 metadata:
   name: ingress-no-auth
   namespace: default
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
 spec:
   rules:
   - http:
@@ -29,4 +31,4 @@ spec:
             name: auth-server-test-service
             port:
               number: 5000
-  ingressClassName: nginx
+  #ingressClassName: nginx
