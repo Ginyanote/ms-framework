@@ -22,9 +22,9 @@ spec:
         - containerPort: 5000
         env:
         - name: DATABASE_NAME
-          value: "postgres"
+          value: "user-db-postgres"
         - name: DATABASE_HOST
-          value: "postgres-service"
+          value: "user-db-postgres-service"
         - name: DATABASE_PORT
           value: "5432"
         - name: EXPIRES_SECONDS
@@ -44,14 +44,3 @@ spec:
             secretKeyRef:
               name: auth-service-secret
               key: AUTH_SECRET
-        envFrom:
-        - configMapRef:
-            name: roles-config
-        volumeMounts:
-        - name: roles-config
-          mountPath: "/config"
-          readOnly: true
-      volumes:
-      - name: roles-config
-        configMap:
-          name: roles-config
