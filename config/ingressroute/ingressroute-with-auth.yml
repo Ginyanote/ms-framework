@@ -1,0 +1,55 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  creationTimestamp: null
+  name: ingress-with-auth
+  namespace: default
+spec:
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/message`)
+    middlewares:
+    - name: auth-4917873474387576508
+      namespace: default
+    services:
+    - kind: Service
+      name: client-test-service
+      namespace: default
+      port: 8081
+  - kind: Rule
+    match: PathPrefix(`/logout`)
+    middlewares:
+    - name: auth-4917873474387576508
+      namespace: default
+    services:
+    - kind: Service
+      name: auth-service-service
+      namespace: default
+      port: 5000
+  - kind: Rule
+    match: PathPrefix(`/blacklist/cleanup`)
+    middlewares:
+    - name: auth-4917873474387576508
+      namespace: default
+    services:
+    - kind: Service
+      name: auth-service-service
+      namespace: default
+      port: 5000
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  creationTimestamp: null
+  name: auth-4917873474387576508
+  namespace: default
+spec:
+  forwardAuth:
+    address: http://auth-service-service.default.svc.cluster.local:5000/verify
+    authResponseHeaders:
+    - UserID
+    - IsAdmin
+    - UserRoles
+    tls: {}
