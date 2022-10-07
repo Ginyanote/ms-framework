@@ -1,0 +1,31 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: traefik
+  creationTimestamp: null
+  name: ingress-no-auth
+  namespace: default
+spec:
+  routes:
+  - kind: Rule
+    match: PathPrefix(`/health`)
+    services:
+    - kind: Service
+      name: client-test-service
+      namespace: default
+      port: 8081
+  - kind: Rule
+    match: PathPrefix(`/user`)
+    services:
+    - kind: Service
+      name: auth-service-service
+      namespace: default
+      port: 5000
+  - kind: Rule
+    match: PathPrefix(`/login`)
+    services:
+    - kind: Service
+      name: auth-service-service
+      namespace: default
+      port: 5000
