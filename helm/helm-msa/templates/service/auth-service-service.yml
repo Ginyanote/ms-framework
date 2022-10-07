@@ -1,12 +1,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: server-test-service
+  name: auth-service-service
 spec:
   selector:
-    app: server-test-1
+    app: auth-service
   ports:
     - protocol: TCP
-      port: 8080
-      targetPort: 8080
+      port: 5000
+      targetPort: 5000
   type: ClusterIP
