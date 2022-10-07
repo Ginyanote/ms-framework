@@ -3,6 +3,7 @@ kind: Service
 metadata:
   name: client-test-service
   annotations:
+    kubernetes.io/ingress.class: traefik
     ingress.kubernetes.io/auth-type: forward
     ingress.kubernetes.io/auth-url: http://auth-service-service.default.svc.cluster.local:5000/verify
     ingress.kubernetes.io/auth-response-headers: UserID, IsAdmin, UserRoles
