@@ -5,7 +5,12 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 curl -sfL https://get.k3s.io | sh -
 
 #Download Linkerd and install onto Cluster
-curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/install | sh
+linkerd
+if [ $? -eq 0 ]; then
+   echo Linkerd already installed
+else
+   curl --proto '=https' --tlsv1.2 -sSfL https://run.linkerd.io/install | sh
+fi
 
 export PATH=$PATH:/root/.linkerd2/bin
 export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -15,7 +20,7 @@ linkerd install | kubectl apply -f -
 
 #Install Helm if not present
 helm
-if [$? -eq 0]; then
+if [ $? -eq 0 ]; then
    echo Helm already installed
 else
    curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
@@ -29,14 +34,14 @@ fi
 counter=1
 retries=10
 sleeptime=10
-while [$counter -le $retries]
+while [ $counter -le $retries ]
 do
    ((counter++))
    kubectl get ingressroute
-   if [$? -eq 0]; then
+   if [ $? -eq 0 ]; then
       break
    else
-      if [$counter -eq $retries]; then
+      if [ $counter -eq $retries ]; then
          echo CRDs are not yet available, please install helm-chart manually
          exit 1
       fi
