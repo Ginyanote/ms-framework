@@ -25,5 +25,25 @@ else
    sudo apt-get install helm
 fi
 
+#Wait for availability of CRDs in the cluster
+counter=1
+retries=10
+sleeptime=10
+while [$counter -le $retries]
+do
+   ((counter++))
+   kubectl get ingressroute
+   if [$? -eq 0]; then
+      break
+   else
+      if [$counter -eq $retries]; then
+         echo CRDs are not yet available, please install helm-chart manually
+         exit 1
+      fi
+      echo CRDs not yet ready, retrying in $sleeptime seconds
+      sleep $sleeptime
+   fi
+done
+
 #Install Helm-Chart
 helm install helm-msa $SCRIPT_DIR/helm/helm-msa
